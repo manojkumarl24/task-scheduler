@@ -1,0 +1,21 @@
+SWIGGY SYSTEM - DOMAIN MODELING
+
+DOMAIN: Food Ordering & Delivery System
+
+ACTORS(STAKEHOLDERS):
+ Customer: search by restaurant, fooditem, make orders
+ Deliverer: delivers order
+ RestaurantManager: manage menu, 
+
+ENTITIES:
+1. User: - username, phoneno, emailID, address
+    1.1 Customer- 
+    1.2 Deliverer- 
+    1.3 RestaurantManager- restaurant
+2. Restaurant- name, rating, menu
+3. Branch- restaurant, branchName
+3. FoodItem- name, cuisine, category
+4. Menu - fooditem, price, isavailable
+5. Cart - menuitem, qty
+5. Order - cart, overallprice, customer, status
+6. Delivery - orderID, isDelivered, timestamp, rating, 
