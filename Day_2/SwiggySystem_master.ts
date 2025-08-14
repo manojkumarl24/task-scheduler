@@ -147,7 +147,7 @@ try {
     manager1.addFoodToMenu("Paneer Butter Masala", 200, true);
     manager1.addFoodToMenu("Gulab Jamun", 50, false);
 
-    const customer1 = new Customer("John");
+    const customer1 = new Customer("Ram");
     console.log(customer1.searchRestaurantsByName([rest1], "Spicy"));
     console.log(customer1.searchFood([rest1], "Biryani"));
 
@@ -155,7 +155,7 @@ try {
 
     console.log("Manager's Orders:", manager1.viewOrders());
 
-    const deliverer1 = new Deliverer("Mike");
+    const deliverer1 = new Deliverer("Priya");
     manager1.assignOrderToDeliverer(order1, deliverer1);
 
     deliverer1.deliverOrder(order1);
@@ -163,3 +163,4 @@ try {
 } catch (error) {
     console.error('Error:', error);
 }
+
