@@ -26,6 +26,11 @@ app.use("/tasks", authenticateJWT, taskRoutes);
 
 app.get("/me", authenticateJWT, (req, res) => res.json({ user: req.user }));
 
+app.get('/test', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
+
 app.listen(PORT, () => {
   console.log(`API listening on port ${PORT}`);
 });

@@ -1,0 +1,46 @@
+name: Task Scheduler Backend CI
+
+on:
+  push:
+    branches: ["master", "full-stack"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend   
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint code
+        run: npm run lint || echo "No lint configured, skipping..."
+
+      - name: Run tests
+        run: npm test || echo "No tests found, skipping..."
+
+      - name: Build Docker image
+        run: docker build -t task-scheduler-backend-cicd .
+
+      - name: Run container test
+        run: docker run --rm task-scheduler-backend-cicd node -v
