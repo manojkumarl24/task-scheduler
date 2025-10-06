@@ -5,6 +5,6 @@ describe("GET /test", () => {
   it("should return 200", async () => {
     const res = await request(app).get("/test");
     expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty("message", "OK");
+    expect(res.body).toHaveProperty("status", "OK");
   });
 });
