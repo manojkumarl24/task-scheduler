@@ -26,7 +26,7 @@ app.use("/tasks", authenticateJWT, taskRoutes);
 app.get("/me", authenticateJWT, (req, res) => res.json({ user: req.user }));
 
 app.get('/test', (req, res) => {
-  res.json({ status: 'ok' });
+  res.json({ status: 'OK' });
 });
 
 
