@@ -10,13 +10,13 @@ services:
       - "2108:2108"
     restart: unless-stopped
 
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: task-frontend
-    ports:
-      - "5173:80"   #(serve nginx on 80 -> host 5173)
-    depends_on:
-      - backend
-    restart: unless-stopped
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: task-frontend
+  #   ports:
+  #     - "5173:80"   #(serve nginx on 80 -> host 5173)
+  #   depends_on:
+  #     - backend
+  #   restart: unless-stopped
