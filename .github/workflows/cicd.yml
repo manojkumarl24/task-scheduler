@@ -44,3 +44,9 @@ jobs:
 
       - name: Run container test
         run: docker run --rm task-scheduler-backend-cicd node -v
+
+      - name: Test container endpoint
+        run: |
+          docker run -d -p 5000:5000 task-scheduler-backend-cicd
+          curl http://localhost:5000/health
+
