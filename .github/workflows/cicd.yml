@@ -47,6 +47,9 @@ jobs:
 
       - name: Test container endpoint
         run: |
-          docker run -d -p 2108:2108 task-scheduler-backend-cicd
-          curl http://localhost:2108/test
+          docker run -d -p 2108:2108 --name backend-test task-scheduler-backend-cicd
+          echo "Waiting for container to start..."
+          sleep 5
+          curl -f http://localhost:2108/test || (docker logs backend-test && exit 1)
+          docker rm -f backend-test
 
