@@ -7,8 +7,8 @@ const seed = () => {
   if (users.size === 0) {
     const adminId = uuidv4();
     const userId = uuidv4();
-    users.set(adminId, { id: adminId, username: "admin", password: "admin123", role: "admin", createdAt: new Date().toISOString() });
-    users.set(userId, { id: userId, username: "user", password: "user123", role: "user", createdAt: new Date().toISOString() });
+    users.set(adminId, { id: adminId, username: "taskadm", password: "hello123", role: "admin", createdAt: new Date().toISOString() });
+    users.set(userId, { id: userId, username: "manoj", password: "mk246", role: "user", createdAt: new Date().toISOString() });
   }
 };
 seed();
