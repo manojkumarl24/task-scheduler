@@ -75,7 +75,6 @@ jobs:
           docker run -d \
             --name task-scheduler-backend \
             -p 2108:2108 \
-            --env-file .env \
             task-scheduler-backend:latest
 
       - name: Verify deployment
