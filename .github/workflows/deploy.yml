@@ -1,15 +1,13 @@
 name: Task Scheduler Backend - Deploy
 
 on:
-  push:
-    branches: ["master", "full-stack"]
-  pull_request:
-    branches: ["master"]
+  workflow_dispatch:  
+  # push:
+  #   branches: ["master"]
 
 jobs:
-    deploy:
+  deploy:
     runs-on: self-hosted
-    needs: build-test
 
     defaults:
       run:
