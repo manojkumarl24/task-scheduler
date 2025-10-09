@@ -1,4 +1,4 @@
-name: Task Scheduler Backend - Build & Test
+name: Backend-Build and Test
 
 on:
   push:
