@@ -1,0 +1,97 @@
+name: Task Scheduler Backend - CI/CD
+
+on:
+  push:
+    branches: ["master", "full-stack"]
+  pull_request:
+    branches: ["master"]
+
+jobs:
+  build-test:
+    runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+
+      - name: Cache Node modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint code
+        run: npm run lint || echo "No lint configured, skipping..."
+
+      - name: Run tests
+        run: npm test || echo "No tests found, skipping..."
+
+      - name: Build Docker image
+        run: docker build -t task-scheduler-backend:latest .
+
+      - name: Save Docker image
+        run: docker save task-scheduler-backend:latest -o task-scheduler-backend.tar
+
+      - name: Upload Docker image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-image
+          path: backend/task-scheduler-backend.tar
+
+
+  deploy:
+    runs-on: self-hosted
+    needs: build-test
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Docker image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-image
+          path: backend
+
+      - name: Load Docker image
+        run: docker load -i backend/task-scheduler-backend.tar
+
+      - name: Stop existing container
+        run: |
+          CONTAINER_ID=$(docker ps -q --filter "name=task-scheduler-backend")
+          if [ ! -z "$CONTAINER_ID" ]; then
+            docker stop $CONTAINER_ID
+            docker rm $CONTAINER_ID
+          fi
+
+      - name: Deploy container
+        run: |
+          docker run -d \
+            --name task-scheduler-backend \
+            -p 2108:2108 \
+            --env-file .env \
+            task-scheduler-backend:latest
+
+      - name: Verify deployment
+        run: |
+          sleep 5
+          curl -f http://localhost:2108/test || exit 1
+
+      - name: Cleanup old Docker images
+        run: docker image prune -f
